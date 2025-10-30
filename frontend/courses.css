@@ -9,6 +9,8 @@
 body {
   background-color: #fff;
   color: #3b0a45;
+  display: flex;
+  flex-direction: column;
 }
 
 /* HEADER */
@@ -113,11 +115,13 @@ body {
 /* COURSES SECTION */
 .courses-section {
   position: relative;
-  padding: 100px 40px;
+  min-height: calc(100vh - 130px); /* fills the screen between header & footer */
+  padding: 100px 40px 80px; /* add bottom padding for footer */
   text-align: center;
-  background-image: url('images/ChatGPT Image Oct 19, 2025, 06_04_12 PM.png');
+  background-image: url("images/ChatGPT Image Oct 19, 2025, 06_04_12 PM.png");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
   background-repeat: no-repeat;
 }
 
@@ -136,6 +140,7 @@ body {
   position: relative;
   z-index: 2;
 }
+
 
 .courses-section h2 {
   font-size: 2.2rem;
@@ -230,3 +235,4 @@ body {
     padding: 15px;
   }
 }
+
