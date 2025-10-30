@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Player | meriLipi</title>
+  <link rel="stylesheet" href="course-player.css" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="nav-container">
+      <div class="logo-container">
+        <img src="/frontend/images/ChatGPT Image Oct 14, 2025, 09_50_00 AM.png" alt="meriLipi Logo" class="logo" />
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <button class="donate-btn">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== COURSE PLAYER ===== -->
+  <main class="player-container">
+    <h2 id="courseTitle" class="course-title"></h2>
+
+    <div class="player-layout">
+      <!-- Left: Video -->
+      <section class="video-section">
+        <iframe id="videoPlayer" allowfullscreen></iframe>
+      </section>
+
+      <!-- Right: Lecture List -->
+      <aside class="lecture-panel">
+        <h3>Lectures</h3>
+        <div id="lectureList" class="lecture-list"></div>
+      </aside>
+    </div>
+
+    <!-- Course Description -->
+    <div id="courseDesc" class="course-description"></div>
+  </main>
+
+  <script>
+    // Get course index from URL
+    const params = new URLSearchParams(window.location.search);
+    const index = params.get("index");
+    const courses = JSON.parse(localStorage.getItem("coursesData")) || [];
+
+    if (!courses[index]) {
+      document.body.innerHTML =
+        "<h2 style='text-align:center;margin-top:100px;'>Course not found.</h2>";
+    } else {
+      const course = courses[index];
+      const title = document.getElementById("courseTitle");
+      const desc = document.getElementById("courseDesc");
+      const video = document.getElementById("videoPlayer");
+      const list = document.getElementById("lectureList");
+
+      title.textContent = course.title;
+      desc.textContent = course.description || "Explore your course lectures below.";
+
+      if (course.lectures.length > 0) {
+        let current = 0;
+        const firstLink = course.lectures[0].link;
+        video.src = "https://www.youtube.com/embed/" + extractId(firstLink);
+
+        course.lectures.forEach((lec, idx) => {
+          const item = document.createElement("div");
+          item.className = "lecture-item";
+          item.textContent = lec.title;
+
+          if (idx === 0) item.classList.add("active");
+
+          item.addEventListener("click", () => {
+            current = idx;
+            video.src = "https://www.youtube.com/embed/" + extractId(lec.link);
+            document.querySelectorAll(".lecture-item").forEach((el) =>
+              el.classList.remove("active")
+            );
+            item.classList.add("active");
+          });
+
+          list.appendChild(item);
+        });
+      } else {
+        list.innerHTML = "<p class='no-lectures'>No lectures available.</p>";
+      }
+    }
+
+    function extractId(url) {
+      const regExp = /(?:v=|\.be\/)([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regExp);
+      return match ? match[1] : url;
+    }
+  </script>
+</body>
+</html>

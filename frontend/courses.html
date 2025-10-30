@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses | meriLipi</title>
+  <link rel="stylesheet" href="courses.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="nav-container">
+      <img src="images/ChatGPT Image Oct 14, 2025, 09_50_00 AM.png" alt="meriLipi Logo" class="logo" />
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="courses.html" class="active">Courses</a>
+        <a href="login.html">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="courses-section">
+    <br>
+    <br>
+    <br>
+    <h2>Explore Our Punjabi Learning Courses</h2>
+    <br>
+    <br>
+    <br>
+    <p class="subtitle">Fun, interactive lessons to help children learn Punjabi easily!</p>
+
+    <div class="courses-container" id="coursesContainer"></div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 meriLipi | Learning made fun for every child.</p>
+  </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById("coursesContainer");
+    const courses = JSON.parse(localStorage.getItem("coursesData")) || [];
+
+    if (courses.length === 0) {
+      container.innerHTML = "<p>No courses available yet.</p>";
+      return;
+    }
+
+    courses.forEach((c, i) => {
+      const card = document.createElement("div");
+      card.classList.add("course-card");
+      card.innerHTML = `
+        <img src="${c.image || '/images/alphabet.png'}" alt="Course Image" />
+        <h3>${c.title}</h3>
+        <p>${c.description}</p>
+      `;
+
+
+      card.addEventListener("click", () => {
+        window.location.href = "course-player.html?index=" + i;
+      });
+
+      container.appendChild(card);
+    });
+  });
+</script>
+</body>
+</html>
+
